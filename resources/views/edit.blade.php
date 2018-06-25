@@ -32,11 +32,15 @@ button {
 @section('content')
 <div class="form">
     <p>{{ $date }}</p>
-    <form action="/update" method="get">
-        {{ csrf_field() }}
-        @foreach ($data as $value)
-        <textarea name="entry" id="entry" cols="30" rows="10">{{ $value->entry }}</textarea>
-        @endforeach
+        @if(count($data) > 0)
+            <form action="/update" method="get">
+                @foreach ($data as $value)
+                    <textarea name="entry" id="entry" cols="30" rows="10">{{ $value->entry }}</textarea>
+                @endforeach
+        @else
+            <form action="/entry" method="get">
+                <textarea name="entry" id="entry" cols="30" rows="10"></textarea>
+        @endif
         <div class="links submit">
             <button type="submit">記録</button>
         </div>

@@ -11,10 +11,6 @@
 |
  */
 
-// Route::get('/', function () {
-//     return view('entry');
-// });
-
 Route::get('/about', function () {
     return view('about');
 });

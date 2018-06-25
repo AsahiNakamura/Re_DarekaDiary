@@ -35,7 +35,7 @@ class Controller extends BaseController
         $url = self::getUrl($request);
 
         if ($url == 'edit') {
-            //既存記事の修正ページへの繊維
+            //既存記事の修正ページへの遷移
             $entry = Entry::getEntry();
             $date = Entry::getToday();
             $date = $date->format('Y年m月d日');
@@ -62,7 +62,7 @@ class Controller extends BaseController
     {
         $entry = $request["entry"];
         if (!isset($entry)) {
-            $entry = "";
+            $entry = "ざんねん, 誰かが消してしまったようですね.";
         }
         Entry::updateEntry($entry);
 
