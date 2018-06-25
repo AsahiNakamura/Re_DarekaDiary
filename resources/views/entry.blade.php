@@ -1,5 +1,5 @@
 @extends('template.header')
-@section('title', '自分が書かなければおそらく誰かが書く日記')
+@section('title', 'Re: 誰かダイアリー')
 <style>
 .form {
     font-size: 100%;

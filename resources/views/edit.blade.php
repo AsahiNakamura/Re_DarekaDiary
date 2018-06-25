@@ -1,5 +1,5 @@
 @extends('template.header')
-@section('title', '自分が書かなければおそらく誰かが書く日記')
+@section('title', 'Re: 誰かダイアリー')
 <style>
 .form {
     font-size: 100%;
@@ -11,8 +11,11 @@
     font-size: 250%;
     font-weight: bold;
 }
-button {
-    /**/
+.button {
+    border-radius: 5px;
+}
+.button:active{
+    transform: translateY(2px);
 }
 #entry {
     text-align: left;
@@ -42,7 +45,8 @@ button {
                 <textarea name="entry" id="entry" cols="30" rows="10"></textarea>
         @endif
         <div class="links submit">
-            <button type="submit">記録</button>
+            <button class="button" type="submit">記録</button>
+            <a href="/about">about</a>
         </div>
     </form>
 </div>
