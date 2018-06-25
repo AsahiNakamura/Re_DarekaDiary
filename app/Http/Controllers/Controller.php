@@ -13,40 +13,74 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index()
+    public function index(Request $request)
     {
         $entry = Entry::getEntry();
         $date = Entry::getToday();
         $date = $date->format('Y年m月d日');
-        // dump(isset($entry->items));//TODO
 
-        if (isset($entry->items)) {
+        if ($entry->count() > 0) {
             return view('entry', ["data" => $entry], ["date" => $date]);
         } else {
             return view('edit', ["data" => $entry], ["date" => $date]);
         }
     }
 
+    /**
+     * フォームリクエストからの処理分岐
+     */
     public function formAction(Request $request)
     {
-        // $existingEntry = Entry::getEntry();
         $entry = $request["entry"];
-        $url = $request->url();
-        //TODO:URL末尾の切り出し処理が必要.
-        // dump($url);
-        // dump(preg_match('/\//',$url));
-        $date = Entry::getToday();
-        $date = $date->format('Y年m月d日');
+        $url = self::getUrl($request);
 
-        if ($entry !== '') {
-            if ($url == 'edit') {
-                Entry::editEntry($entry);
-            } else if ($url == 'entry') {
-                Entry::insertEntry($entry);
+        if ($url == 'edit') {
+            //既存記事の修正ページへの繊維
+            $entry = Entry::getEntry();
+            $date = Entry::getToday();
+            $date = $date->format('Y年m月d日');
+            return view('edit', ["data" => $entry], ["date" => $date]);
+
+        } else if ($url == 'entry') {
+            //新規登録
+            if (isset($entry)) {
+                $query = new Entry;
+                $query->entry = $entry;
+                $query->save();
+            } else {
+                return redirect('/');
             }
-        } else {
-            return redirect('/');
         }
 
+        return redirect('/');
+    }
+
+    /**
+     * 既存記事の修正
+     */
+    public function update(Request $request)
+    {
+        $entry = $request["entry"];
+        if (!isset($entry)) {
+            $entry = "";
+        }
+        Entry::updateEntry($entry);
+
+        return redirect('/');
+    }
+
+    /**
+     * リクエスト元のURL末尾を取得する
+     */
+    public function getUrl(Request $request)
+    {
+        $url = $request->url();
+        $pattern = '/\//';
+
+        if (preg_match($pattern, $url)) {
+            $result = preg_split($pattern, $url);
+            $url = (string) $result[3];
+        }
+        return $url;
     }
 }

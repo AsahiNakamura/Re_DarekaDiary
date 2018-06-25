@@ -15,25 +15,17 @@ class Entry extends Model
         return Carbon::today();
     }
 
-    public static function insertEntry(string $entry)
-    {
-        $query = self::query();
-        $query->insert(['entry' => $entry]);
-    }
-
-    public static function editEntry(string $entry)
+    public static function updateEntry(string $entry)
     {
         $query = self::query();
         $today = self::getToday();
-        $query = self::where('created_at', '>', $today)->save(['entry' => $entry]);
+        $query = self::where('created_at', '>', $today)->update(['entry' => $entry]);
     }
 
     public static function getEntry()
     {
         $today = self::getToday();
         $entry = self::where('created_at', '>', $today)->get();
-
-        // $data['entry'] = $entry;
 
         return $entry;
     }

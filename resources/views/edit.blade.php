@@ -32,8 +32,11 @@ button {
 @section('content')
 <div class="form">
     <p>{{ $date }}</p>
-    <form action="/entry" method="get">
-        <textarea name="entry" id="entry" cols="30" rows="10"></textarea>
+    <form action="/update" method="get">
+        {{ csrf_field() }}
+        @foreach ($data as $value)
+        <textarea name="entry" id="entry" cols="30" rows="10">{{ $value->entry }}</textarea>
+        @endforeach
         <div class="links submit">
             <button type="submit">記録</button>
         </div>

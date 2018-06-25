@@ -26,7 +26,9 @@
 @section('content')
 <div class="form">
     <p>{{ $date }}</p>
-    <div id="entry">ここに記事が入ります</div>
+    @foreach ($data as $value)
+    <div id="entry">{!! nl2br(e($value->entry)) !!}</div>
+    @endforeach
     <div class="links">
         <a href="/edit">edit</a>
         <a href="/about">about</a>

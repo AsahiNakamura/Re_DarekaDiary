@@ -18,6 +18,7 @@
 Route::get('/about', function () {
     return view('about');
 });
+Route::get('/update', 'Controller@update');
 Route::get('/entry', 'Controller@formAction');
 Route::get('/edit', 'Controller@formAction');
 
