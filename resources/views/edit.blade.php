@@ -28,13 +28,24 @@
 .links>a {
     padding: 0 0.5em;
 }
+.form>p>a {
+    font-size: 50%;
+    font-weight:unset;
+    padding: 0 1em;
+    color: slategrey;
+}
 .submit {
     margin-top: 0.5em;
 }
 </style>
 @section('content')
 <div class="form">
-    <p>{{ $date }}</p>
+        @if(isset($date))
+        <p>
+            <a href="/{{ $date["yesterday"] }}"><<</a>
+            {{ $date["today"] }}
+            <a href="/{{ $date["tomorrow"] }}">>></a></p>
+        @endif
         @if(count($data) > 0)
             <form action="/update" method="get">
                 @foreach ($data as $value)

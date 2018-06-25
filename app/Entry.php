@@ -15,6 +15,23 @@ class Entry extends Model
         return Carbon::today();
     }
 
+    public static function changeDateFormatToCarbon($date)
+    {
+        return new Carbon($date);
+    }
+
+    public static function getYesterday($date)
+    {
+        $date = new Carbon($date);
+        return $yesterday = $date->subDay();
+    }
+
+    public static function getTomorrow($date)
+    {
+        $date = new Carbon($date);
+        return $tomorrow = $date->addDay();
+    }
+
     public static function updateEntry(string $entry)
     {
         $query = self::query();
@@ -22,10 +39,18 @@ class Entry extends Model
         $query = self::where('created_at', '>', $today)->update(['entry' => $entry]);
     }
 
-    public static function getEntry()
+    public static function getTodayEntry()
     {
         $today = self::getToday();
         $entry = self::where('created_at', '>', $today)->get();
+
+        return $entry;
+    }
+
+    public static function getOldEntry($date)
+    {
+        $entry = self::whereDate('created_at', '=', $date)
+            ->get();
 
         return $entry;
     }

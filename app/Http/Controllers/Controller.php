@@ -15,9 +15,8 @@ class Controller extends BaseController
 
     public function index(Request $request)
     {
-        $entry = Entry::getEntry();
-        $date = Entry::getToday();
-        $date = $date->format('Y年m月d日');
+        $entry = Entry::getTodayEntry();
+        $date = self::getDates();
 
         if ($entry->count() > 0) {
             return view('entry', ["data" => $entry], ["date" => $date]);
@@ -35,10 +34,8 @@ class Controller extends BaseController
         $url = self::getUrl($request);
 
         if ($url == 'edit') {
-            //既存記事の修正ページへの遷移
-            $entry = Entry::getEntry();
-            $date = Entry::getToday();
-            $date = $date->format('Y年m月d日');
+            $date = self::getDates();
+            $entry = Entry::getTodayEntry();
             return view('edit', ["data" => $entry], ["date" => $date]);
 
         } else if ($url == 'entry') {
@@ -82,5 +79,59 @@ class Controller extends BaseController
             $url = (string) $result[3];
         }
         return $url;
+    }
+
+    /**
+     * 日付取得処理
+     */
+    public function getDates()
+    {
+        $today = Entry::getToday();
+        $yesterday = Entry::getYesterday($today);
+        $tomorrow = Entry::getTomorrow($today);
+
+        $today = $today->format('Y年m月d日');
+        $yesterday = $yesterday->format('Y-m-d');
+        $tomorrow = $tomorrow->format('Y-m-d');
+
+        $date = [
+            "today" => $today,
+            "yesterday" => $yesterday,
+            "tomorrow" => $tomorrow,
+        ];
+
+        return $date;
+    }
+
+    /**
+     * 前日のエントリーページを表示する
+     */
+    public function showOldEntry($date)
+    {
+        $today = Entry::getToday();
+        $_today = $today->format('Y-m-d');
+        if ($_today == $date) {
+            return redirect('/');
+        }
+
+        // 記事取得
+        $entry = Entry::getOldEntry($date);
+
+        //日付取得
+        $date = Entry::changeDateFormatToCarbon($date);
+        $yesterday = Entry::getYesterday($date);
+        $tomorrow = Entry::getTomorrow($date);
+
+        $today = $date->format('Y年m月d日');
+        $yesterday = $yesterday->format('Y-m-d');
+        $tomorrow = $tomorrow->format('Y-m-d');
+
+        $date = [
+            "today" => $today,
+            "yesterday" => $yesterday,
+            "tomorrow" => $tomorrow,
+        ];
+
+        return view('oldEntry', ["data" => $entry], ["date" => $date]);
     }
 }

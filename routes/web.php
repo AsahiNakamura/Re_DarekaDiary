@@ -19,3 +19,4 @@ Route::get('/entry', 'Controller@formAction');
 Route::get('/edit', 'Controller@formAction');
 
 Route::get('/', 'Controller@index');
+Route::get('/{date}', 'Controller@showOldEntry');

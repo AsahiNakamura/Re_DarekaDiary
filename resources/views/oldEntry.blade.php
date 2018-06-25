@@ -41,7 +41,6 @@
     <div id="entry">{!! nl2br(e($value->entry)) !!}</div>
     @endforeach
     <div class="links">
-        <a href="/edit">edit</a>
         <a href="/about">about</a>
     </div>
 </div>
