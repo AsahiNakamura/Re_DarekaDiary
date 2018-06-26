@@ -36,13 +36,13 @@ class Entry extends Model
     {
         $query = self::query();
         $today = self::getToday();
-        $query = self::where('created_at', '>', $today)->update(['entry' => $entry]);
+        $query = self::where('created_at', '>=', $today)->update(['entry' => $entry]);
     }
 
     public static function getTodayEntry()
     {
         $today = self::getToday();
-        $entry = self::where('created_at', '>', $today)->get();
+        $entry = self::where('created_at', '>=', $today)->get();
 
         return $entry;
     }
